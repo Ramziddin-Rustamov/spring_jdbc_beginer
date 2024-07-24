@@ -1,17 +1,37 @@
 package dasturlash.uz;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import dasturlash.uz.DTO.StudentDTO;
+import dasturlash.uz.config.ApplicationConfig;
+import dasturlash.uz.repository.StudentRepository;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+        StudentRepository studentRepository = context.getBean(StudentRepository.class);
 
-        for (int i=1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // Save some students
+        StudentDTO student1 = new StudentDTO("Ali", "Aliyev", LocalDateTime.now());
+        StudentDTO student2 = new StudentDTO("Vali", "Valiyev", LocalDateTime.now());
+        studentRepository.save(student1);
+        studentRepository.save(student2);
+
+        // List all students
+        List<StudentDTO> studentList = studentRepository.getStudentList();
+        studentList.forEach(System.out::println);
+
+        // Update a student
+        StudentDTO updatedStudent = new StudentDTO("Ramziddin", "Rustamov", LocalDateTime.now());
+        studentRepository.updateStudent(1, updatedStudent);
+
+        // List all students after update
+        List<StudentDTO> updatedList = studentRepository.getStudentList();
+        updatedList.forEach(System.out::println);
+        // delete student worked
+        studentRepository.deleteStudent(1);
     }
 }
