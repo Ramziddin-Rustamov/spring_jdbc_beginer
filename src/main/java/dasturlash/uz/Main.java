@@ -13,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         StudentRepository studentRepository = context.getBean(StudentRepository.class);
+        studentRepository.createTabel();
 
         // Save some students
         StudentDTO student1 = new StudentDTO("Ali", "Aliyev", LocalDateTime.now());
@@ -33,5 +34,15 @@ public class Main {
         updatedList.forEach(System.out::println);
         // delete student worked
         studentRepository.deleteStudent(1);
+
+        // get counted students List
+        Long counted =  studentRepository.getStudentCount();
+        System.out.println("All of the students  " + counted);
+
+        Long names =  studentRepository.getStudentCountWhereNameEquals("Ramziddin");
+        System.out.println("All of the students  " + names);
+
+
+
     }
 }
